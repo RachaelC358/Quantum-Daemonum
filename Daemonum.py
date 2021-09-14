@@ -14,8 +14,30 @@ from qiskit import IBMQ
 import math
 
 
-def runGame():
+def runGame(programType):
+    if ProgramType == 'real':
+    # execute program on real quantum computer
+    else:
+    # execute program on quantum simulator
+        start = time.time();
+        job = qiskit.execute(program, qiskit.Aer.get_backend('qasm-simulator'), shots=shots)
+        result = job.result().get_counts()
+        stop = time.time();
 
+def battleStatus(points):
+
+    
+def guessingGame():
+    print("VH attempts to guess your name.")
+    # quantum computer generates VH's guess
+    qComputerResult = quantumGuess(secretName)
+    if 
+    else
+    command = input
+
+
+def guantumGuess()    
+    # 4-bit Grover's search
 
 def action(option):
     option = option.lower(0);
