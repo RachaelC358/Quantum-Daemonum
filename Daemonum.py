@@ -76,10 +76,19 @@ def getDemonName(index):
 
 def main():
     #print welcome message
-    print("Welcom to")
-    print(" __                 ___                __        ___        __")
-    print("/  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
-    print("\__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
+    print("")
+    print(" WELCOME TO:")
+    print("  __                 ___                __        ___        __")
+    print(" /  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
+    print(" \__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
+    print("")
+    print(" You are a wicked spirit locked in battle against Van Helsing, the infamous slayer")
+    print(" of unholy beasts. He will try to destroy you by guessing your true name. You must")
+    print(" stop him at any cost. A battle of magic and wits begins!")
+    print("")
+    print(" Use keyboard commands to attempt to thwart Van Helsing, who makes guesses using")
+    print(" Grover's search algorithm, which runs on a quantum simulator.")
+    print("")
 
     #run.isInit = False
     gameOver = False
@@ -88,17 +97,21 @@ def main():
 
     #Begin main loop of game
     while not gameOver:
+        print(" ````````````````````````````````````````````````````````````````````````````````````````")
+        print(" Evil : ", evil)
         # get player input
         text = ''
         #while not text.lower() in ['u','d','q','up','down','quit']:
         # parse input
 
-    #process input
+        #process input
 
-    #process on quantum simulator
+        #process on quantum simulator
 
-    #check player progress    
+        #check player progress    
+        gameOver = True
 
+        
 if __name__ == "__main__":
     main()
     
