@@ -7,8 +7,8 @@
 # that can either weaken his ability to guess or hide your name entirely.
 #
 
-from configparser import RawCofigParser
-from randomint import random, randomInt, bitsToInt
+from configparser import RawConfigParser
+import random
 import qiskit
 from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit
 from qiskit import IBMQ
@@ -17,11 +17,6 @@ import operator
 import math
 import ast
 
-
-
- __                 ___                __        ___        __                  
-/  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/| 
-\__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  | 
                                                                                 
 
 def runGame():
@@ -31,32 +26,32 @@ def runGame():
     result = job.result().get_counts()
     stop = time.time();
 
-def battleStatus(points):
+#def battleStatus(points):
 
     
 def guessingGame():
     print("Van Helsing attempts to guess your name.")
     # quantum computer generates VH's guess
     qComputerResult = quantumGuess(secretName)
-    if 
-    else
+    #if 
+    #else
     command = input
 
 
-def guantumGuess()    
+#def guantumGuess()    
     # 4-bit Grover's search
 
 def action(option):
     option = option.lower(0);
 
-    switcher = {
+    #switcher = {
     # thwart
-    't':
+    #'t':
     # 
-    '':
+    #'':
     #
-    '':
-    }
+    #'':
+    
 
 
 def getDemonName(index):
@@ -79,17 +74,23 @@ def getDemonName(index):
         16:'Naphula'
     }
 
+def main():
+    #print welcome message
+    print("Welcom to")
+    print(" __                 ___                __        ___        __")
+    print("/  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
+    print("\__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
 
-    run.isInit = False
+    #run.isInit = False
     gameOver = False
     evil = 100
     turns = 0
 
     #Begin main loop of game
-    while not gameOver
+    while not gameOver:
         # get player input
         text = ''
-        while not text.lower() in ['u','d','q','up','down','quit']:
+        #while not text.lower() in ['u','d','q','up','down','quit']:
         # parse input
 
     #process input
@@ -98,5 +99,7 @@ def getDemonName(index):
 
     #check player progress    
 
+if __name__ == "__main__":
+    main()
     
     
