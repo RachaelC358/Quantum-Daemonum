@@ -1,3 +1,4 @@
+# Program by Rachael Carpenter
 #
 # Quantum Daemonum 
 # A simple game where you play as as a wicked spirit in a battle with
@@ -76,30 +77,47 @@ def getDemonName(index):
 
 def main():
     #print welcome message
-    print("")
-    print(" WELCOME TO:")
     print("  __                 ___                __        ___        __")
     print(" /  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
     print(" \__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
+    print("          ~ A DARK GAME PLAYED AGAINST A SIMULATED QUANTUM COMPUTER ~")
     print("")
-    print(" You are a wicked spirit locked in battle against Van Helsing, the infamous slayer")
-    print(" of unholy beasts. He will try to destroy you by guessing your true name. You must")
-    print(" stop him at any cost. A battle of magic and wits begins!")
+    print("")
+    print(" The year is 1887.")
+    print("")
+    print(" You are a wicked spirit, evil personified, who is being hunted by Van Helsing, the")
+    print(" infamous slayer of unholy beasts. He will try to destroy you by guessing your true name.")
+    print(" You must stop him at any cost. A battle of magic and wits begins!")
     print("")
     print(" Use keyboard commands to attempt to thwart Van Helsing, who makes guesses using")
     print(" Grover's search algorithm, which runs on a quantum simulator.")
     print("")
+    print(" Van Helsing has you cornered in the caverns below Corvin Castle in Romania. He")
+    print(" performs the rites of excorcism while you have your powers of psychic blasting, ")
+    print(" ")
+    print("")
+
+    # pick the true name for this game from name array
+    print(" Your true name is ... ")
 
     #run.isInit = False
     gameOver = False
     evil = 100
     turns = 0
+    loopControl = 1
 
     #Begin main loop of game
     while not gameOver:
-        print(" ````````````````````````````````````````````````````````````````````````````````````````")
-        print(" Evil : ", evil)
+        print(" +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        #if (loopControl == 1): 
+            
+        print("")
+        roundStr = str(loopControl)
+        evilStr = str(evil)
+        print(" Round: ", roundStr.rjust(5))
+        print(" Evil : ", evilStr.rjust(5))
         # get player input
+        print("")
         text = ''
         #while not text.lower() in ['u','d','q','up','down','quit']:
         # parse input
@@ -108,8 +126,10 @@ def main():
 
         #process on quantum simulator
 
-        #check player progress    
-        gameOver = True
+        #check player progress
+        loopControl = loopControl + 1
+        if (loopControl >= 4):
+            gameOver = True
 
         
 if __name__ == "__main__":
