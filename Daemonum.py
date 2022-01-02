@@ -38,9 +38,72 @@ def guessingGame():
     #else
     command = input
 
+# utility function called by quantumGuess
+def quantumProcessing
+    
 
-#def guantumGuess()    
+def guantumGuess()    
     # 4-bit Grover's search
+    # create 2 qubits
+    qreg = QuantumRegister(4)
+    # these 2 registers take output
+    creg = ClassicalRegister(4)
+
+    # place qubits into superposition, representing all possible outcomes
+    guessProcess.h(qreg)
+
+    # Run quantumProcessing on key, inverting bits
+    quantumProcessing(guessProcess, qreg, hiddenName)
+
+    #Grover's Algorithm
+    guessProcess.cul(np.pi / 4, qr[0], qr[3])
+    guessProcess.cx(qr[0], qr[1])
+    guessProcess.cul(-np.pi / 4, qr[1], qr[3])
+    guessProcess.cx(qr[0], qr[1])
+    guessProcess.cul(np.pi / 4, qr[1], qr[3])
+    guessProcess.cx(qr[1], qr[2])
+    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
+    guessProcess.cx(qr[0], qr[2])
+    guessProcess.cul(np.pi / 4, qr[2], qr[3])
+    guessProcess.cx(qr[1], qr[2])
+    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
+    guessProcess.cx(qr[0], qr[2])
+    guessProcess.cul(np.pi / 4, qr[2], qr[3])
+
+    #Reverse the earlier inversions
+    quantumProcessing(guessProcess, qr, hiddenName)
+
+    #Amplification
+    guessProcess.h(qr)
+    guessProcess.x(qr)
+
+    #apply grover's algorithm again
+    guessProcess.cul(np.pi / 4, qr[0], qr[3])
+    guessProcess.cx(qr[0], qr[1])
+    guessProcess.cul(-np.pi / 4, qr[1], qr[3])
+    guessProcess.cx(qr[0], qr[1])
+    guessProcess.cul(np.pi / 4, qr[1], qr[3])
+    guessProcess.cx(qr[1], qr[2])
+    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
+    guessProcess.cx(qr[0], qr[2])
+    guessProcess.cul(np.pi / 4, qr[2], qr[3])
+    guessProcess.cx(qr[1], qr[2])
+    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
+    guessProcess.cx(qr[0], qr[2])
+    guessProcess.cul(np.pi / 4, qr[2], qr[3])
+
+    # Reverse amplification
+    guessProcess.x(qr)
+    guessProcess.h(qr)
+
+    # Measure results
+    guessProcess.barrier(qr)
+    guessProcess.measure(qr, cr)
+
+    #check for error, if result matches one of the given names
+    result = run(guessProcess, device)
+    print(result)
+    foundName = max()
 
 def action(option):
     option = option.lower(0);
@@ -98,6 +161,9 @@ def main():
     print("")
 
     # pick the true name for this game from name array
+    playerName = random(16)
+    nameInt = bitsToInt(playerName)
+    trueName = getDemonName(nameInt)
     print(" Your true name is ... ")
 
     #run.isInit = False
