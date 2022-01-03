@@ -103,7 +103,10 @@ def guantumGuess()
     #check for error, if result matches one of the given names
     result = run(guessProcess, device)
     print(result)
-    foundName = max()
+    foundName = max(result.items(), key=operator.itemgetter(1))[0]
+
+    # convert binary result to character array
+    
 
 def action(option):
     option = option.lower(0);
@@ -140,9 +143,9 @@ def getDemonName(index):
 
 def main():
     #print welcome message
-    print("  __                 ___                __        ___        __")
-    print(" /  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
-    print(" \__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
+    print("   __                 ___                __        ___        __")
+    print("  /  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
+    print("  \__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
     print("          ~ A DARK GAME PLAYED AGAINST A SIMULATED QUANTUM COMPUTER ~")
     print("")
     print("")
