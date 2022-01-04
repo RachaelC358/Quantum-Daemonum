@@ -17,6 +17,7 @@ import time
 import operator
 import math
 import ast
+import numpy as np
 
                                                                                 
 
@@ -44,23 +45,24 @@ def quantumProcessing(quessProgram, qreg, hiddenName):
     hiddenName = np.asarray(hiddenName)
 
     # Find all bits in the array with a value of 0
-    indexList = np.where(secret == 0)[0]
+    indexList = np.where(hiddenName == 0)[0]
 
     # Invert the 0s
     for i in range(len(indexList)):
         #
-        anIndex = int(len(secret) - 1 - indexList[i])
+        anIndex = int(len(hiddenName) - 1 - indexList[i])
         
         # Invert qubit
         quessProgram.x(qr[anIndex])
     
 
-def guantumGuess():    
+def quantumGuess(hiddenName):    
     # 4-bit Grover's search
     # create 2 qubits
     qreg = QuantumRegister(4)
     # these 2 registers take output
     creg = ClassicalRegister(4)
+    guessProcess = QuantumCircuit(qreg, creg)
 
     # place qubits into superposition, representing all possible outcomes
     guessProcess.h(qreg)
@@ -69,7 +71,7 @@ def guantumGuess():
     quantumProcessing(guessProcess, qreg, hiddenName)
 
     #Grover's Algorithm
-    guessProcess.cul(np.pi / 4, qr[0], qr[3])
+    guessProcess.cul(np.pi / 4, qreg[0], qreg[3])
     guessProcess.cx(qr[0], qr[1])
     guessProcess.cul(-np.pi / 4, qr[1], qr[3])
     guessProcess.cx(qr[0], qr[1])
@@ -199,7 +201,7 @@ def main():
 
     #Begin main loop of game
     while not gameOver:
-        print(" +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        print(" +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+")
         #if (loopControl == 1): 
             
         print("")
@@ -215,7 +217,16 @@ def main():
 
         #process input
 
-        #process on quantum simulator
+        #process on quantum simulator, VH will guess now
+        if not gameOver:
+            #let the computer guess
+            VHResult = quantumGuess(trueName)
+
+            #convert index of name into the correct range
+            #nameIndex = VHResult -
+
+            print(" Van Helsing Guesses: " + getDemonName(VHResult))
+        
 
         #check player progress
         loopControl = loopControl + 1
