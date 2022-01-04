@@ -39,10 +39,23 @@ def guessingGame():
     command = input
 
 # utility function called by quantumGuess
-def quantumProcessing
+def quantumProcessing(quessProgram, qreg, hiddenName):
+    # Convert hiddenName in binary from list to array
+    hiddenName = np.asarray(hiddenName)
+
+    # Find all bits in the array with a value of 0
+    indexList = np.where(secret == 0)[0]
+
+    # Invert the 0s
+    for i in range(len(indexList)):
+        #
+        anIndex = int(len(secret) - 1 - indexList[i])
+        
+        # Invert qubit
+        quessProgram.x(qr[anIndex])
     
 
-def guantumGuess()    
+def guantumGuess():    
     # 4-bit Grover's search
     # create 2 qubits
     qreg = QuantumRegister(4)
@@ -106,6 +119,14 @@ def guantumGuess()
     foundName = max(result.items(), key=operator.itemgetter(1))[0]
 
     # convert binary result to character array
+    resultArray = list(foundName)
+
+    # convert character array in integers
+    resultArrayInt = [int(i) for i in arrResult]
+
+    #convert result to index in name array
+    return bitsToInt(resultArrayInt)
+
     
 
 def action(option):
@@ -122,7 +143,7 @@ def action(option):
 
 
 def getDemonName(index):
-    names = {
+    demonNames = {
         1:'Dusios',
         2:'Belial',
         3:'Belphegor', 
@@ -140,13 +161,14 @@ def getDemonName(index):
         15:'Moloch',
         16:'Naphula'
     }
+    return demonNames.get(index)
 
 def main():
     #print welcome message
     print("   __                 ___                __        ___        __")
     print("  /  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
     print("  \__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
-    print("          ~ A DARK GAME PLAYED AGAINST A SIMULATED QUANTUM COMPUTER ~")
+    print("           ~ A DARK GAME PLAYED AGAINST A SIMULATED QUANTUM COMPUTER ~")
     print("")
     print("")
     print(" The year is 1887.")
@@ -164,10 +186,10 @@ def main():
     print("")
 
     # pick the true name for this game from name array
-    playerName = random(16)
-    nameInt = bitsToInt(playerName)
-    trueName = getDemonName(nameInt)
-    print(" Your true name is ... ")
+    playerName = random.randint(1, 16)
+    print(" index: " + str(playerName))
+    trueName = getDemonName(playerName)
+    print(" Your true name is ... " + str(trueName))
 
     #run.isInit = False
     gameOver = False
