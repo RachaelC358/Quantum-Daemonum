@@ -12,7 +12,7 @@ from configparser import RawConfigParser
 import random
 import qiskit
 from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit
-from qiskit import IBMQ
+#from qiskit import IBMQ
 import time
 import operator
 import math
@@ -23,11 +23,10 @@ import numpy as np
 
 def runGame():
     # execute program on quantum simulator
-    start = time.time();
     job = qiskit.execute(program, qiskit.Aer.get_backend('qasm-simulator'), shots=shots)
     result = job.result().get_counts()
-    stop = time.time();
-
+    
+    print(" Quantum simulator is now running.")
 #def battleStatus(points):
 
     
@@ -71,19 +70,19 @@ def quantumGuess(hiddenName):
     quantumProcessing(guessProcess, qreg, hiddenName)
 
     #Grover's Algorithm
-    guessProcess.cul(np.pi / 4, qreg[0], qreg[3])
-    guessProcess.cx(qr[0], qr[1])
-    guessProcess.cul(-np.pi / 4, qr[1], qr[3])
-    guessProcess.cx(qr[0], qr[1])
-    guessProcess.cul(np.pi / 4, qr[1], qr[3])
-    guessProcess.cx(qr[1], qr[2])
-    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
-    guessProcess.cx(qr[0], qr[2])
-    guessProcess.cul(np.pi / 4, qr[2], qr[3])
-    guessProcess.cx(qr[1], qr[2])
-    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
-    guessProcess.cx(qr[0], qr[2])
-    guessProcess.cul(np.pi / 4, qr[2], qr[3])
+    guessProcess.cu1(np.pi / 4, qreg[0], qreg[3])
+    guessProcess.cx(qreg[0], qreg[1])
+    guessProcess.cu1(-np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cx(qreg[0], qreg[1])
+    guessProcess.cu1(np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cx(qreg[1], qreg[2])
+    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qreg[0], qreg[2])
+    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qreg[1], qreg[2])
+    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qreg[0], qreg[2])
+    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
 
     #Reverse the earlier inversions
     quantumProcessing(guessProcess, qr, hiddenName)
@@ -93,19 +92,19 @@ def quantumGuess(hiddenName):
     guessProcess.x(qr)
 
     #apply grover's algorithm again
-    guessProcess.cul(np.pi / 4, qr[0], qr[3])
-    guessProcess.cx(qr[0], qr[1])
-    guessProcess.cul(-np.pi / 4, qr[1], qr[3])
-    guessProcess.cx(qr[0], qr[1])
-    guessProcess.cul(np.pi / 4, qr[1], qr[3])
-    guessProcess.cx(qr[1], qr[2])
-    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
-    guessProcess.cx(qr[0], qr[2])
-    guessProcess.cul(np.pi / 4, qr[2], qr[3])
-    guessProcess.cx(qr[1], qr[2])
-    guessProcess.cul(-np.pi / 4, qr[2], qr[3])
-    guessProcess.cx(qr[0], qr[2])
-    guessProcess.cul(np.pi / 4, qr[2], qr[3])
+    guessProcess.cu1(np.pi / 4, qreg[0], qreg[3])
+    guessProcess.cx(qreg[0], qreg[1])
+    guessProcess.cu1(-np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cx(qreg[0], qreg[1])
+    guessProcess.cu1(np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cx(qreg[1], qreg[2])
+    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qreg[0], qreg[2])
+    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qr[1], qreg[2])
+    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qr[0], qreg[2])
+    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
 
     # Reverse amplification
     guessProcess.x(qr)
@@ -116,7 +115,7 @@ def quantumGuess(hiddenName):
     guessProcess.measure(qr, cr)
 
     #check for error, if result matches one of the given names
-    result = run(guessProcess, device)
+    result = runGame(guessProcess, device)
     print(result)
     foundName = max(result.items(), key=operator.itemgetter(1))[0]
 
@@ -193,7 +192,7 @@ def main():
     trueName = getDemonName(playerName)
     print(" Your true name is ... " + str(trueName))
 
-    #run.isInit = False
+    #runGame.isInit = False
     gameOver = False
     evil = 100
     turns = 0
