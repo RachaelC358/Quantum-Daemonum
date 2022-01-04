@@ -12,6 +12,7 @@ from configparser import RawConfigParser
 import random
 import qiskit
 from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit
+from qiskit.providers.aer import QasmSimulator
 #from qiskit import IBMQ
 import time
 import operator
@@ -21,12 +22,15 @@ import numpy as np
 
                                                                                 
 
-def runGame():
+def runGame(program):
+    shots = 100
     # execute program on quantum simulator
-    job = qiskit.execute(program, qiskit.Aer.get_backend('qasm-simulator'), shots=shots)
+    job = qiskit.execute(program, qiskit.Aer.get_backend('qasm_simulator'), shots=shots)
     result = job.result().get_counts()
-    
     print(" Quantum simulator is now running.")
+    return result
+
+
 #def battleStatus(points):
 
     
@@ -70,63 +74,68 @@ def quantumGuess(hiddenName):
     quantumProcessing(guessProcess, qreg, hiddenName)
 
     #Grover's Algorithm
-    guessProcess.cu1(np.pi / 4, qreg[0], qreg[3])
+    guessProcess.cp(np.pi / 4, qreg[0], qreg[3])
     guessProcess.cx(qreg[0], qreg[1])
-    guessProcess.cu1(-np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cp(-np.pi / 4, qreg[1], qreg[3])
     guessProcess.cx(qreg[0], qreg[1])
-    guessProcess.cu1(np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cp(np.pi / 4, qreg[1], qreg[3])
     guessProcess.cx(qreg[1], qreg[2])
-    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cp(-np.pi / 4, qreg[2], qreg[3])
     guessProcess.cx(qreg[0], qreg[2])
-    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cp(np.pi / 4, qreg[2], qreg[3])
     guessProcess.cx(qreg[1], qreg[2])
-    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cp(-np.pi / 4, qreg[2], qreg[3])
     guessProcess.cx(qreg[0], qreg[2])
-    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cp(np.pi / 4, qreg[2], qreg[3])
 
     #Reverse the earlier inversions
-    quantumProcessing(guessProcess, qr, hiddenName)
+    quantumProcessing(guessProcess, qreg, hiddenName)
 
     #Amplification
-    guessProcess.h(qr)
-    guessProcess.x(qr)
+    guessProcess.h(qreg)
+    guessProcess.x(qreg)
 
     #apply grover's algorithm again
-    guessProcess.cu1(np.pi / 4, qreg[0], qreg[3])
+    guessProcess.cp(np.pi / 4, qreg[0], qreg[3])
     guessProcess.cx(qreg[0], qreg[1])
-    guessProcess.cu1(-np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cp(-np.pi / 4, qreg[1], qreg[3])
     guessProcess.cx(qreg[0], qreg[1])
-    guessProcess.cu1(np.pi / 4, qreg[1], qreg[3])
+    guessProcess.cp(np.pi / 4, qreg[1], qreg[3])
     guessProcess.cx(qreg[1], qreg[2])
-    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cp(-np.pi / 4, qreg[2], qreg[3])
     guessProcess.cx(qreg[0], qreg[2])
-    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
-    guessProcess.cx(qr[1], qreg[2])
-    guessProcess.cu1(-np.pi / 4, qreg[2], qreg[3])
-    guessProcess.cx(qr[0], qreg[2])
-    guessProcess.cu1(np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cp(np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qreg[1], qreg[2])
+    guessProcess.cp(-np.pi / 4, qreg[2], qreg[3])
+    guessProcess.cx(qreg[0], qreg[2])
+    guessProcess.cp(np.pi / 4, qreg[2], qreg[3])
 
     # Reverse amplification
-    guessProcess.x(qr)
-    guessProcess.h(qr)
+    guessProcess.x(qreg)
+    guessProcess.h(qreg)
 
     # Measure results
-    guessProcess.barrier(qr)
-    guessProcess.measure(qr, cr)
+    guessProcess.barrier(qreg)
+    guessProcess.measure(qreg, creg)
 
     #check for error, if result matches one of the given names
-    result = runGame(guessProcess, device)
-    print(result)
-    foundName = max(result.items(), key=operator.itemgetter(1))[0]
+    results = runGame(guessProcess)
+    print(results)
+    foundName = max(results.items(), key=operator.itemgetter(1))[0]
 
     # convert binary result to character array
     resultArray = list(foundName)
 
     # convert character array in integers
-    resultArrayInt = [int(i) for i in arrResult]
+    resultArrayInt = [int(i) for i in resultArray]
+    print("result array printing")
+    print(resultArrayInt)
 
+    stringy = ''.join([str(item) for item in resultArrayInt])
+    print(stringy)
+    myIndex = int(stringy, 2)
     #convert result to index in name array
-    return bitsToInt(resultArrayInt)
+    return myIndex
 
     
 
