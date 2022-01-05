@@ -147,21 +147,6 @@ def quantumGuess(hiddenName):
     myIndex = int(stringy, 2)
     #convert result to index in name array
     return myIndex
-
-    
-
-def action(read):
-    read = read.lower(0);
-
-    #switcher = {
-    # thwart
-    #'t':
-    # 
-    #'':
-    #
-    #'':
-
-    return switcher.get(read[0], -1)
     
 
 
@@ -187,6 +172,19 @@ def getDemonName(index):
     return demonNames.get(index)
 
 
+
+def action(read):
+    read = str(read)
+    read = read.lower()
+    switcher = {
+        'v': 2, 
+        'm': 1,
+        'n': 0
+    }    
+    return switcher.get(read[0], -1)
+
+
+
 def response(read):
     read = str(read)
     read = read.lower()
@@ -195,30 +193,27 @@ def response(read):
         'n': 0,
         'q': 0
     }
-
     return switcher.get(read[0], -1)
 
 
 def main():
     #print welcome message
+    print("")
     print("   __                 ___                __        ___        __")
     print("  /  \ |  |  /\  |\ |  |  |  |  |\/|    |  \  /\  |__   |\/| /  \ |\ | |  |  |\/|")
     print("  \__X \__/ /~~\ | \|  |  \__/  |  |    |__/ /~~\ |___  |  | \__/ | \| \__/  |  |")
     print("           ~ A DARK GAME PLAYED AGAINST A SIMULATED QUANTUM COMPUTER ~")
     print("")
     print("")
-    print(" The year is 1887.")
+    print(" The year is 1887. You are a wicked spirit, evil personified, who is being hunted")
+    print(" by Van Helsing, the infamous slayer of unholy beasts. He will try to destroy you by")
+    print(" guessing your true name. You must stop him at any cost. A battle of magic and wits")
+    print(" begins! Van Helsing has you cornered in the caverns below Corvin Castle in Romania.")
+    print(" He performs the rites of excorcism while you have three spells, Vaporum, Malum,")
     print("")
-    print(" You are a wicked spirit, evil personified, who is being hunted by Van Helsing, the")
-    print(" infamous slayer of unholy beasts. He will try to destroy you by guessing your true")
-    print(" name. You must stop him at any cost. A battle of magic and wits begins!")
     print("")
     print(" Use keyboard commands to attempt to thwart Van Helsing, who makes guesses using")
     print(" Grover's search algorithm, which runs on a quantum simulator.")
-    print("")
-    print(" Van Helsing has you cornered in the caverns below Corvin Castle in Romania. He")
-    print(" performs the rites of excorcism while you have your powers of psychic blasting, ")
-    print("")
     print("")
 
     quitGame = False
@@ -229,39 +224,48 @@ def main():
         playerName = random.randint(1, 16)
         playerName = playerName - 1
         trueName = getDemonName(playerName)
-        print(" Your true name is ... " + str(trueName))
+        print(" Your true name is ... " + str(trueName) + "\n")
         # convert player name index int to binary
-        secretBinary = format(playerName,"04b")
+        secretBinary = format(playerName, "04b")
 
         gameOver = False
-        evil = 100
+        evil = 0
         turns = 0
         loopControl = 1
         VHResult = ""
         
-        print(" +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+") 
-        print("")
-        roundStr = str(loopControl)
-        evilStr = str(evil)
-        print(" Round: ", roundStr.rjust(5))
-        print(" Evil : ", evilStr.rjust(5))
-        # get player input
-        print("")
-        text = ''
-        #while not text.lower() in ['u','d','q','up','down','quit']:
-        # parse input
-
-        #process input
-
-        #process on quantum simulator, VH will guess now
+        
         while not gameOver:
-            #let the computer guess
-            VHResult = quantumGuess(secretBinary)
+            VHActive = True
+            
+            print(" +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+") 
+            print("")
+            roundStr = str(loopControl)
+            evilStr = str(evil)
+            print(" Round: ", roundStr.rjust(5))
+            print(" Evil : ", evilStr.rjust(5))
+            # get player input
+            read = ''
+            while not read.lower() in ['v','m','n','vapoum','Malum','nothing']:
+                read = input("\n [Vaporum(v), Malum(m), nothing(n)]: ").lower()
 
-            #convert index of name into the correct range
-            #nameIndex = VHResult -
+            #process input
+            actionCode = -1
+            actionCode = action(read)
+            if actionCode == 2:
+                VHActive = False
+            elif actionCode == 1:
+                evil =  evil + 50
+            elif actionCode == 0:
+                print(" Nothing happens.")
+            else:
+                print(" What?")    
 
-            print(" Van Helsing Guesses: " + getDemonName(VHResult))
+            if VHActive:
+                #process on quantum simulator, VH will guess now
+                #let the computer guess
+                VHResult = quantumGuess(secretBinary)
+                print(" Van Helsing Guesses: " + getDemonName(VHResult))
         
 
             #check player progress
@@ -270,16 +274,16 @@ def main():
                 gameOver = True
             continue
 
+
         loopControl = loopControl + 1
         read = ''
         while not read.lower() in ['y','n','q','yes','no','quit']:
                 #Read input from user
                 read = input("\n +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+\n" + 
-                              "\n [yes, no, quit]: ").lower()
-        print(read)
+                              "\n [yes(y), no(n), quit(q)]: ").lower()
+        #process input        
         actionCode = -1
         actionCode = response(read)
-        print("actionCode: ",actionCode)
         if actionCode == 0:
             quitGame =  True
         elif actionCode == 1:
