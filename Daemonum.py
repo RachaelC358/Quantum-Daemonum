@@ -150,8 +150,8 @@ def quantumGuess(hiddenName):
 
     
 
-def action(option):
-    option = option.lower(0);
+def action(read):
+    read = read.lower(0);
 
     #switcher = {
     # thwart
@@ -160,6 +160,8 @@ def action(option):
     #'':
     #
     #'':
+
+    return switcher.get(read[0], -1)
     
 
 
@@ -184,16 +186,18 @@ def getDemonName(index):
     }
     return demonNames.get(index)
 
-def response(input):
-    input = input.lower()[0]
 
-    switch = {
+def response(read):
+    read = str(read)
+    read = read.lower()
+    switcher = {
         'y': 1,
         'n': 0,
         'q': 0
     }
 
-    return switch.get(input, -1)
+    return switcher.get(read[0], -1)
+
 
 def main():
     #print welcome message
@@ -206,34 +210,33 @@ def main():
     print(" The year is 1887.")
     print("")
     print(" You are a wicked spirit, evil personified, who is being hunted by Van Helsing, the")
-    print(" infamous slayer of unholy beasts. He will try to destroy you by guessing your true name.")
-    print(" You must stop him at any cost. A battle of magic and wits begins!")
+    print(" infamous slayer of unholy beasts. He will try to destroy you by guessing your true")
+    print(" name. You must stop him at any cost. A battle of magic and wits begins!")
     print("")
     print(" Use keyboard commands to attempt to thwart Van Helsing, who makes guesses using")
     print(" Grover's search algorithm, which runs on a quantum simulator.")
     print("")
     print(" Van Helsing has you cornered in the caverns below Corvin Castle in Romania. He")
     print(" performs the rites of excorcism while you have your powers of psychic blasting, ")
-    print(" ")
+    print("")
     print("")
 
-    # pick the true name for this game from name array
-    playerName = random.randint(1, 16)
-    playerName = playerName - 1
-    trueName = getDemonName(playerName)
-    print(" Your true name is ... " + str(trueName))
-    # convert player name index int to binary
-    secretBinary = format(playerName,"04b")
-    
-
-    gameOver = False
     quitGame = False
-    evil = 100
-    turns = 0
-    loopControl = 1
 
     #Begin main loop of game
     while not quitGame:
+        # pick the true name for this game from name array
+        playerName = random.randint(1, 16)
+        playerName = playerName - 1
+        trueName = getDemonName(playerName)
+        print(" Your true name is ... " + str(trueName))
+        # convert player name index int to binary
+        secretBinary = format(playerName,"04b")
+
+        gameOver = False
+        evil = 100
+        turns = 0
+        loopControl = 1
         VHResult = ""
         
         print(" +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+") 
@@ -268,16 +271,19 @@ def main():
             continue
 
         loopControl = loopControl + 1
-        input = ''
-        while not input.lower() in ['y','n','q','yes','no','quit']:
+        read = ''
+        while not read.lower() in ['y','n','q','yes','no','quit']:
                 #Read input from user
-                input = input("\n +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+\n + "
+                read = input("\n +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+\n" + 
                               "\n [yes, no, quit]: ").lower()
+        print(read)
         actionCode = -1
-        actionCode = response(input)
+        actionCode = response(read)
+        print("actionCode: ",actionCode)
         if actionCode == 0:
             quitGame =  True
-        elif actionCode == 1: 
+        elif actionCode == 1:
+            gameOver = False
             continue
         else:
             print(" What?")
