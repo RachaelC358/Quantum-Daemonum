@@ -8,12 +8,12 @@
 # that can either weaken his ability to guess or hide your name entirely.
 #
 
+
 from configparser import RawConfigParser
 import random
 import qiskit
 from qiskit import ClassicalRegister, QuantumRegister, QuantumCircuit
 from qiskit.providers.aer import QasmSimulator
-#from qiskit import IBMQ
 import time
 import operator
 import math
@@ -21,13 +21,12 @@ import ast
 import numpy as np
 
                                                                                 
-
+#
 def runGame(program):
     shots = 100
     # execute program on quantum simulator
     job = qiskit.execute(program, qiskit.Aer.get_backend('qasm_simulator'), shots=shots)
     result = job.result().get_counts()
-    print(" Quantum simulator is now running.")
     return result
 
 
@@ -38,21 +37,15 @@ def runGame(program):
 # utility function called by quantumGuess
 def quantumProcessing(quessProcess, qreg, hiddenName):
     # Convert hiddenName in binary from list to array
-    
     secretName = list(hiddenName)
     
     secretName.reverse()
-    
-    
     indexList = []
 
     for i in range(len(secretName)):
         if (secretName[i] == '0'):
             indexList.append(i)
     
-    
-    
-
     # Find all bits in the array with a value of 0
     #indexList = np.where(secretName == 0)
     #print(len(indexList))
@@ -70,8 +63,6 @@ def quantumProcessing(quessProcess, qreg, hiddenName):
     
 
 def quantumGuess(hiddenName):
-    print("creating quantum registers")
-    
     # 4-bit Grover's search to identify target index of 4 bits from list of all combinations of 4 bits
     # create 2 qubits for input
     qreg = QuantumRegister(4)
@@ -142,7 +133,6 @@ def quantumGuess(hiddenName):
 
     #check for error, if result matches one of the given names
     results = runGame(guessProcess)
-    print(results)
     foundName = max(results.items(), key=operator.itemgetter(1))[0]
 
     # convert binary result to character array
@@ -194,6 +184,17 @@ def getDemonName(index):
     }
     return demonNames.get(index)
 
+def response(input):
+    input = input.lower()[0]
+
+    switch = {
+        'y': 1,
+        'n': 0,
+        'q': 0
+    }
+
+    return switch.get(input, -1)
+
 def main():
     #print welcome message
     print("   __                 ___                __        ___        __")
@@ -220,23 +221,22 @@ def main():
     playerName = random.randint(1, 16)
     playerName = playerName - 1
     trueName = getDemonName(playerName)
-    print(" target index:",playerName)
     print(" Your true name is ... " + str(trueName))
     # convert player name index int to binary
     secretBinary = format(playerName,"04b")
-    print(secretBinary)
+    
 
-    #runGame.isInit = False
     gameOver = False
+    quitGame = False
     evil = 100
     turns = 0
     loopControl = 1
 
     #Begin main loop of game
-    while not gameOver:
-        print(" +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+")
-        #if (loopControl == 1): 
-            
+    while not quitGame:
+        VHResult = ""
+        
+        print(" +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+") 
         print("")
         roundStr = str(loopControl)
         evilStr = str(evil)
@@ -251,7 +251,7 @@ def main():
         #process input
 
         #process on quantum simulator, VH will guess now
-        if not gameOver:
+        while not gameOver:
             #let the computer guess
             VHResult = quantumGuess(secretBinary)
 
@@ -261,10 +261,27 @@ def main():
             print(" Van Helsing Guesses: " + getDemonName(VHResult))
         
 
-        #check player progress
+            #check player progress
+            if  (VHResult != "" and str(getDemonName(VHResult)) == str(trueName)):
+                print(" GAME OVER")
+                gameOver = True
+            continue
+
         loopControl = loopControl + 1
-        if (loopControl >= 4):
-            gameOver = True
+        input = ''
+        while not input.lower() in ['y','n','q','yes','no','quit']:
+                #Read input from user
+                input = input("\n +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+\n + "
+                              "\n [yes, no, quit]: ").lower()
+        actionCode = -1
+        actionCode = response(input)
+        if actionCode == 0:
+            quitGame =  True
+        elif actionCode == 1: 
+            continue
+        else:
+            print(" What?")
+        
 
         
 if __name__ == "__main__":
