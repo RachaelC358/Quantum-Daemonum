@@ -33,46 +33,62 @@ def runGame(program):
 
 #def battleStatus(points):
 
-    
-def guessingGame():
-    print("Van Helsing attempts to guess your name.")
-    # quantum computer generates VH's guess
-    qComputerResult = quantumGuess(secretName)
-    #if 
-    #else
-    command = input
+
 
 # utility function called by quantumGuess
-def quantumProcessing(quessProgram, qreg, hiddenName):
+def quantumProcessing(quessProcess, qreg, hiddenName):
     # Convert hiddenName in binary from list to array
-    hiddenName = np.asarray(hiddenName)
+    
+    secretName = list(hiddenName)
+    
+    secretName.reverse()
+    
+    
+    indexList = []
+
+    for i in range(len(secretName)):
+        if (secretName[i] == '0'):
+            indexList.append(i)
+    
+    
+    
 
     # Find all bits in the array with a value of 0
-    indexList = np.where(hiddenName == 0)[0]
+    #indexList = np.where(secretName == 0)
+    #print(len(indexList))
+    #print(indexList)
 
     # Invert the 0s
     for i in range(len(indexList)):
-        #
-        anIndex = int(len(hiddenName) - 1 - indexList[i])
+        # find bits with a value of 0
+        anIndex = indexList[i]
         
         # Invert qubit
-        quessProgram.x(qr[anIndex])
+        quessProcess.x(qreg[anIndex])
+        
+
     
 
-def quantumGuess(hiddenName):    
-    # 4-bit Grover's search
-    # create 2 qubits
+def quantumGuess(hiddenName):
+    print("creating quantum registers")
+    
+    # 4-bit Grover's search to identify target index of 4 bits from list of all combinations of 4 bits
+    # create 2 qubits for input
     qreg = QuantumRegister(4)
     # these 2 registers take output
     creg = ClassicalRegister(4)
     guessProcess = QuantumCircuit(qreg, creg)
 
-    # place qubits into superposition, representing all possible outcomes
+    
+    # place qubits into superposition, representing all possible outcomes(starting position)
     guessProcess.h(qreg)
 
-    # Run quantumProcessing on key, inverting bits
-    quantumProcessing(guessProcess, qreg, hiddenName)
+   
+    # Run quantumProcessing on key, inverting bits with value of zero
+    quantumProcessing(guessProcess, qreg, hiddenName) # um never runs???
+    
 
+    
     #Grover's Algorithm
     guessProcess.cp(np.pi / 4, qreg[0], qreg[3])
     guessProcess.cx(qreg[0], qreg[1])
@@ -87,15 +103,18 @@ def quantumGuess(hiddenName):
     guessProcess.cp(-np.pi / 4, qreg[2], qreg[3])
     guessProcess.cx(qreg[0], qreg[2])
     guessProcess.cp(np.pi / 4, qreg[2], qreg[3])
+   
 
-    #Reverse the earlier inversions
+    #Reverse the earlier inversions by guessProcessing
     quantumProcessing(guessProcess, qreg, hiddenName)
 
     #Amplification
     guessProcess.h(qreg)
     guessProcess.x(qreg)
 
-    #apply grover's algorithm again
+    
+ 
+    #apply grover's algorithm again for amplification
     guessProcess.cp(np.pi / 4, qreg[0], qreg[3])
     guessProcess.cx(qreg[0], qreg[1])
     guessProcess.cp(-np.pi / 4, qreg[1], qreg[3])
@@ -110,6 +129,7 @@ def quantumGuess(hiddenName):
     guessProcess.cx(qreg[0], qreg[2])
     guessProcess.cp(np.pi / 4, qreg[2], qreg[3])
 
+    
     # Reverse amplification
     guessProcess.x(qreg)
     guessProcess.h(qreg)
@@ -117,6 +137,8 @@ def quantumGuess(hiddenName):
     # Measure results
     guessProcess.barrier(qreg)
     guessProcess.measure(qreg, creg)
+
+   
 
     #check for error, if result matches one of the given names
     results = runGame(guessProcess)
@@ -128,11 +150,10 @@ def quantumGuess(hiddenName):
 
     # convert character array in integers
     resultArrayInt = [int(i) for i in resultArray]
-    print("result array printing")
-    print(resultArrayInt)
+    
 
     stringy = ''.join([str(item) for item in resultArrayInt])
-    print(stringy)
+    
     myIndex = int(stringy, 2)
     #convert result to index in name array
     return myIndex
@@ -197,9 +218,13 @@ def main():
 
     # pick the true name for this game from name array
     playerName = random.randint(1, 16)
-    print(" index: " + str(playerName))
+    playerName = playerName - 1
     trueName = getDemonName(playerName)
+    print(" target index:",playerName)
     print(" Your true name is ... " + str(trueName))
+    # convert player name index int to binary
+    secretBinary = format(playerName,"04b")
+    print(secretBinary)
 
     #runGame.isInit = False
     gameOver = False
@@ -228,7 +253,7 @@ def main():
         #process on quantum simulator, VH will guess now
         if not gameOver:
             #let the computer guess
-            VHResult = quantumGuess(trueName)
+            VHResult = quantumGuess(secretBinary)
 
             #convert index of name into the correct range
             #nameIndex = VHResult -
