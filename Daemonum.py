@@ -177,9 +177,13 @@ def action(read):
     read = str(read)
     read = read.lower()
     switcher = {
-        'v': 2, 
-        'm': 1,
-        'n': 0
+        'p': 5, #possess, requires high evil
+        'd': 4, #duplici, increase evil, 
+        'v': 3, #vaporum, decrease good, VH requires high good for quantum guess
+                    #VH will increase good each turn until he can attack
+        #'f': 2, #flee
+        'n': 1, #nothing
+        'q': 0  #quit
     }    
     return switcher.get(read[0], -1)
 
@@ -209,7 +213,7 @@ def main():
     print(" by Van Helsing, the infamous slayer of unholy beasts. He will try to destroy you by")
     print(" guessing your true name. You must stop him at any cost. A battle of magic and wits")
     print(" begins! Van Helsing has you cornered in the caverns below Corvin Castle in Romania.")
-    print(" He performs the rites of excorcism while you have three spells, Vaporum, Malum,")
+    print(" He performs the rites of excorcism while you have three spells.")
     print("")
     print("")
     print(" Use keyboard commands to attempt to thwart Van Helsing, who makes guesses using")
@@ -230,38 +234,73 @@ def main():
 
         gameOver = False
         evil = 0
+        good = 50
         turns = 0
         loopControl = 1
         VHResult = ""
+        evilIncrease = -1
+        goodDecrease = -1
+        VHCasting = 5
         
-        
-        while not gameOver:
+        while not gameOver and not quitGame:
             VHActive = True
             
             print(" +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+") 
             print("")
             roundStr = str(loopControl)
+            if VHCasting > 0:
+                good = good + random.randint(1,50)
+                if good > 100:
+                    good = 100
+            if evilIncrease > -1:
+                evil = evil + random.randint(1,50)
+                evilIncrease = evilIncrease - 1
+                if evil > 100:
+                    evil = 100
+            if goodDecrease > -1:
+                good = good - random.randint(1,50)
+                goodDecrease = goodDecrease - 1
+                if goog < 0:
+                    good = 0
             evilStr = str(evil)
             print(" Round: ", roundStr.rjust(5))
             print(" Evil : ", evilStr.rjust(5))
+            goodStr = str(good)
+            print(" Good : ", goodStr.rjust(5))
+            status = ""
+            
+            print("\n Status: " + status)
             # get player input
             read = ''
-            while not read.lower() in ['v','m','n','vapoum','Malum','nothing']:
-                read = input("\n [Vaporum(v), Malum(m), nothing(n)]: ").lower()
+            while not read.lower() in ['p','d','v','f','n','q','possess','duplici','vaporum','nothing','quit']:
+                read = input("\n [Possess(p), Duplici(d), Vaporum(v), nothing(n), quit(q)]: ").lower()
 
             #process input
             actionCode = -1
             actionCode = action(read)
-            if actionCode == 2:
+            #if actionCode == 6:
+            if actionCode == 5:
+                if evil == 100:
+                    print(" You won.")
+                    gameOver = True
+                else:
+                    print(" /nYou are too weak to possess Van Helsing.")
+            elif actionCode == 4: # evil increases for some randome amount of turns
+                evilIncrease = random.randint(1, 5)
+            elif actionCode == 3:
                 VHActive = False
+                goodDecrease = random.randint(1, 5)
+            #elif actionCode == 2:
+                
             elif actionCode == 1:
-                evil =  evil + 50
-            elif actionCode == 0:
                 print(" Nothing happens.")
+            elif actionCode == 0:
+                quitGame = True
+                break
             else:
                 print(" What?")    
 
-            if VHActive:
+            if VHActive and good == 100:
                 #process on quantum simulator, VH will guess now
                 #let the computer guess
                 VHResult = quantumGuess(secretBinary)
@@ -272,25 +311,27 @@ def main():
             if  (VHResult != "" and str(getDemonName(VHResult)) == str(trueName)):
                 print(" GAME OVER")
                 gameOver = True
-            continue
-
-
-        loopControl = loopControl + 1
-        read = ''
-        while not read.lower() in ['y','n','q','yes','no','quit']:
-                #Read input from user
-                read = input("\n +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+\n" + 
+            else:
+                print(" quantum error?")
+            
+            loopControl = loopControl + 1
+            if gameOver == True:
+                read = ''
+                while not read.lower() in ['y','n','q','yes','no','quit']:
+                    #Read input from user
+                    read = input("\n +:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+:+\n" +
+                             " Do you want to play again?"+
                               "\n [yes(y), no(n), quit(q)]: ").lower()
-        #process input        
-        actionCode = -1
-        actionCode = response(read)
-        if actionCode == 0:
-            quitGame =  True
-        elif actionCode == 1:
-            gameOver = False
-            continue
-        else:
-            print(" What?")
+                    #process input        
+                    actionCode = -1
+                    actionCode = response(read)
+                    if actionCode == 0:
+                        gameOver = False
+                        continue
+                    elif actionCode == 1:
+                        loopControl = 1
+                    else:
+                        print(" What?")
         
 
         
