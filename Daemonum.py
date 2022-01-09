@@ -172,6 +172,17 @@ def getDemonName(index):
     return demonNames.get(index)
 
 
+def battleStatus(evil, good):
+    if good > 50 and good < 100 and evil < 50:
+        return 'Dr. Van Helsing is calibrating his quantum computer.'
+    elif evil < 50 and good == 100:
+        return 'Dr. Van Helsing is running his divination algorithm.' 
+    elif evil > 50 and good > 50:
+        return 'Dr. Van Helsing is calibrating his quantum computer.'
+    elif evil < 50 and good < 50:
+       return 'Dr. Van Helsing is experiencing technical issues'
+
+
 
 def action(read):
     read = str(read)
@@ -181,7 +192,6 @@ def action(read):
         'd': 4, #duplici, increase evil, 
         'v': 3, #vaporum, decrease good, VH requires high good for quantum guess
                     #VH will increase good each turn until he can attack
-        #'f': 2, #flee
         'n': 1, #nothing
         'q': 0  #quit
     }    
@@ -197,7 +207,7 @@ def response(read):
         'n': 0,
         'q': 0
     }
-    return switcher.get(read[0], -1)
+    return switcher.get(read, -1)
 
 
 def main():
@@ -260,7 +270,7 @@ def main():
             if goodDecrease > -1:
                 good = good - random.randint(1,50)
                 goodDecrease = goodDecrease - 1
-                if goog < 0:
+                if good < 0:
                     good = 0
             evilStr = str(evil)
             print(" Round: ", roundStr.rjust(5))
@@ -269,7 +279,7 @@ def main():
             print(" Good : ", goodStr.rjust(5))
             status = ""
             
-            print("\n Status: " + status)
+            print("\n Status: " + battleStatus(evil, good))
             # get player input
             read = ''
             while not read.lower() in ['p','d','v','f','n','q','possess','duplici','vaporum','nothing','quit']:
@@ -311,8 +321,7 @@ def main():
             if  (VHResult != "" and str(getDemonName(VHResult)) == str(trueName)):
                 print(" GAME OVER")
                 gameOver = True
-            else:
-                print(" quantum error?")
+            
             
             loopControl = loopControl + 1
             if gameOver == True:
@@ -326,8 +335,8 @@ def main():
                     actionCode = -1
                     actionCode = response(read)
                     if actionCode == 0:
-                        gameOver = False
-                        continue
+                        quitGame = True
+                        break
                     elif actionCode == 1:
                         loopControl = 1
                     else:
