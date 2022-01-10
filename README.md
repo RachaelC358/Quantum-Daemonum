@@ -1,8 +1,13 @@
-# quantum-computer-game-1
-
-Quantum Daemonum 
+# Quantum Daemonum 
 
 A simple game where you play as as a wicked spirit in a battle with
-Van Helsing who is played by a quantum computer. Van Helsing will
-attempt to guess your true name in an attempt to gain power over and
-and defeat you. You can attempt to thwart him with spiritual attacks.
+Van Helsing who has harnassed the power of a quantum simulator. Van 
+Helsing will attempt to guess your true name in an attempt to gain 
+power over and and defeat you. Fight to stall the computer and win
+using magic spells.
+
+This game was designed to test Grover's algorithm, which runs on the
+quantum simulator and can find an object in an unordered list faster
+than on a classical computer by putting qubits in superposition. 
+
+
