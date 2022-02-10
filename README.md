@@ -1,7 +1,7 @@
 # Quantum Daemonum 
 
 A simple text-based game where you play as as a wicked spirit in a 
-battle with Van Helsing, who has harnassed the power of a quantum 
+battle with Van Helsing, who has harnessed the power of a quantum 
 simulator. Van Helsing will attempt to guess your true name in an 
 attempt to gain power over and and defeat you. Fight to stall the 
 computer and win using magic spells.
