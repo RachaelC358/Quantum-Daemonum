@@ -17,15 +17,17 @@ Click link below and complete the fooling instructions.
 
 https://replit.com/join/ueyojypvdy-rachaelc358
 
-1. Locate the shell tab on the upper right side of the screen and click
-  on it.
+1. Click the Green button marked "Run" at the top of the page to start the program.
+
+2. Locate the shell tab on the upper right side of the screen and click
+  on it to view the shell where the game will run.
   
-2. Hover your mouse over the left side of the shell window and click
+3. Hover your mouse over the left side of the shell window and click
   and drag the edge of the window to make the shell wider so you can
   read all the game text.
 
-3. Run the following commands in the shell window:
+4. Run the following commands in the shell window:
 
-      pip install qiskit
+      pip install --user qiskit
       
       python Daemonum.py
