@@ -24,7 +24,7 @@ https://replit.com/join/ueyojypvdy-rachaelc358
   and drag the edge of the window to make the shell wider so you can
   read all the game text.
 
-3. Run the folling commands in the shell window:
+3. Run the following commands in the shell window:
 
       pip install qiskit
       
